@@ -21,5 +21,20 @@
         "dist": true,
         "build": true,
         ".cache": true
-    }
+    },
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#4ab7e4",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#c21d92",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "titleBar.activeBackground": "#21a4da",
+        "titleBar.inactiveBackground": "#21a4da99",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveForeground": "#15202b99",
+        "statusBar.background": "#21a4da",
+        "statusBarItem.hoverBackground": "#1a83ae",
+        "statusBar.foreground": "#15202b"
+    },
+    "peacock.color": "#21a4da"
 }
