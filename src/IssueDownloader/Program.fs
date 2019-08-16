@@ -36,8 +36,9 @@ let createPath (id:int) (link: string) =
 
     let uri = Uri(link);
     let fileName = System.IO.Path.GetFileName(uri.AbsolutePath);
+    let cleanName = Uri.UnescapeDataString(fileName)
 
-    let fullPath = Path.Combine(path, fileName)
+    let fullPath = Path.Combine(path, cleanName)
     fullPath
 
 let downloadLinks token (id:int) (urls: string array)  =
@@ -67,15 +68,22 @@ let extractUrls code =
 let getIssue token user repo id =
     let client = GitHubClient(ProductHeaderValue("my-cool-app"));
     let tokenAuth = Credentials(token)
+    client.Credentials <- tokenAuth
+
     let issue =
         client.Issue.Get(user, repo, id)
         |> Async.AwaitTask
         |> Async.RunSynchronously
 
-    issue.Body
+    issue.Title, issue.Body
 
-let writeBody (id: int) content =
-    let fullPath = createPath id "http://google.com/BODY.md"
+let clean (title: string) =
+    let name = Uri.UnescapeDataString(title)
+    String.Join("_", name.ToLower().Split(Path.GetInvalidFileNameChars())).Replace(" ", "-")
+
+let writeBody (id: int) title content =
+    let name = clean (title)
+    let fullPath = createPath id ("http://google.com/" + name + ".md")
     if File.Exists fullPath then File.Delete fullPath
     File.WriteAllText(fullPath, content)
 
@@ -88,10 +96,10 @@ let main argv =
 
     match data with
     | Some (user, repo) ->
-        let issueBody = getIssue token user repo issueId
+        let issueTitle, issueBody = getIssue token user repo issueId
         let links = extractUrls issueBody |> Seq.toArray
         downloadLinks token issueId links
-        writeBody issueId issueBody
+        writeBody issueId issueTitle issueBody
     | _ ->
         printfn "Invalid remote"
     0

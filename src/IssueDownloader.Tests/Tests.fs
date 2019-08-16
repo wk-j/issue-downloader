@@ -25,3 +25,9 @@ let ``My test`` () =
     let matchs = reg.Matches(code) |> Seq.map(fun x -> x.Groups.["link"].Value)
 
     ()
+
+[<Fact>]
+let unes() =
+    let myUrl = "my.aspx?val=%2Fxyz2F"
+    let decodeUrl = System.Uri.UnescapeDataString(myUrl)
+    Assert.Equal("my.aspx?val=/xyz2F", decodeUrl)
