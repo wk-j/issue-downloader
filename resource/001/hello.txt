@@ -1,0 +1,16 @@
+
+How can I download a single raw file from a private github repo using the command line?
+Ask Question
+Asked 6 years ago
+Active 3 months ago
+Viewed 49k times
+55
+
+On the CI server, I want to fetch a config file that we maintain on Github so it can be shared between many jobs. I'm trying to get this file via curl, but these approaches both fail (I get a 404):
+
+# As advised by the oAuth docs
+curl -H 'Authorization: token the_token' -L -o setup.sh https://raw.github.com/org/repo/file
+
+# The url of the raw file after clicking to view it
+curl -L https://raw.github.com/org/repo/file?login=username&token=the_token
+
