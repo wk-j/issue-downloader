@@ -13,8 +13,5 @@ dotnet tool install -g wk.IssueDownloader
 
 ```bash
 export GITHUB_TOKEN=xyz
-
 wk-issue-downloader <IssueNumber>
-wk-issue-downloader 1
-open resource/001
 ```
