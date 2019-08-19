@@ -70,7 +70,10 @@ let getUser remote (repo: LibGit2Sharp.Repository) =
 let extractUrls code =
     let pattern = "\((?<link>[\S]+)\)"
     let reg = Regex(pattern)
-    let matchs = reg.Matches(code) |> Seq.map(fun x -> x.Groups.["link"].Value)
+    let matchs =
+        reg.Matches(code)
+        |> Seq.map(fun x -> x.Groups.["link"].Value)
+        |> Seq.filter (fun x -> x.StartsWith("http"))
     matchs
 
 let getIssue token user repo id =
