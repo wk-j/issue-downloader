@@ -4,11 +4,15 @@ open Octokit
 open System.IO
 open System.Text.RegularExpressions
 
+
+
 let split k s = (s:String).Split (k:String)
 let replace k s = (s:String).Replace(k, String.Empty)
 
-let getRemotes (repo: LibGit2Sharp.Repository) =
-    repo.Network.Remotes |> Seq.map(fun x -> x.Url)
+let getRemotes remote (repo: LibGit2Sharp.Repository) =
+    repo.Network.Remotes
+    |> Seq.filter(fun x -> x.Name = remote)
+    |> Seq.map(fun x -> x.Url)
 
 let downloadLink token (id:int) (link: string) (fullPath: string) =
     printfn " > download %A" link
@@ -50,8 +54,8 @@ let downloadLinks token (id:int) (urls: string array)  =
         let fullPath = createPath id item
         downloadLink token id item fullPath
 
-let getUser (repo: LibGit2Sharp.Repository) =
-    let remote = getRemotes repo |> Seq.head
+let getUser remote (repo: LibGit2Sharp.Repository) =
+    let remote = getRemotes remote repo |> Seq.head
     let tokens =
         remote
         |> replace "https://github.com/"
@@ -91,15 +95,33 @@ let writeBody (id: int) title content =
     if File.Exists fullPath then File.Delete fullPath
     File.WriteAllText(fullPath, content)
 
+
+type Options = {
+    Remote: string
+    IssueId: string
+}
+
+let rec parseOptions options argv  =
+    match argv with
+    | "--remote" :: xs ->
+        match xs with
+        | value :: xss ->
+            { options with Remote = value }
+        | _ ->  parseOptions options xs
+    | [issue] -> { options with IssueId = issue }
+    | _ -> options
+
 [<EntryPoint>]
 let main argv =
-    let issueId = argv.[0] |> Int32.Parse
+    let options = parseOptions { Remote = "origin"; IssueId = "1" } (argv |> List.ofArray)
+
     let repo = new LibGit2Sharp.Repository(".")
-    let data = getUser repo
+    let data = getUser options.Remote repo
     let token = System.Environment.GetEnvironmentVariable("GITHUB_TOKEN")
 
     match data with
     | Some (user, repo) ->
+        let issueId = options.IssueId |> Int32.Parse
         let issueTitle, issueBody = getIssue token user repo issueId
         let links = extractUrls issueBody |> Seq.toArray
         downloadLinks token issueId links
