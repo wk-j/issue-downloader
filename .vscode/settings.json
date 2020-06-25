@@ -1,5 +1,9 @@
 {
     "omnisharp.path": "latest",
+    "[fsharp]": {
+        "editor.useTabStops": false,
+        "editor.formatOnSave": false
+    },
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -34,7 +38,11 @@
         "titleBar.inactiveForeground": "#15202b99",
         "statusBar.background": "#21a4da",
         "statusBarItem.hoverBackground": "#1a83ae",
-        "statusBar.foreground": "#15202b"
+        "statusBar.foreground": "#15202b",
+        "activityBar.activeBackground": "#4ab7e4",
+        "activityBar.activeBorder": "#c21d92",
+        "statusBar.border": "#21a4da",
+        "titleBar.border": "#21a4da"
     },
     "peacock.color": "#21a4da"
 }

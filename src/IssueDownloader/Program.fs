@@ -1,10 +1,7 @@
 ﻿open System
-open LibGit2Sharp
 open Octokit
 open System.IO
 open System.Text.RegularExpressions
-
-
 
 let split k s = (s:String).Split (k:String)
 let replace k s = (s:String).Replace(k, String.Empty)
@@ -19,7 +16,6 @@ let downloadLink token (id:int) (link: string) (fullPath: string) =
 
     use client = new System.Net.Http.HttpClient()
     client.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("token", token)
-    // client.DefaultRequestHeaders.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.github.v3.raw"))
 
     let data =
         client.GetAsync(link)
@@ -98,7 +94,6 @@ let writeBody (id: int) title content =
     if File.Exists fullPath then File.Delete fullPath
     File.WriteAllText(fullPath, content)
 
-
 type Options = {
     Remote: string
     IssueId: string
@@ -117,7 +112,6 @@ let rec parseOptions options argv  =
 [<EntryPoint>]
 let main argv =
     let options = parseOptions { Remote = "origin"; IssueId = "1" } (argv |> List.ofArray)
-
     let repo = new LibGit2Sharp.Repository(".")
     let data = getUser options.Remote repo
     let token = System.Environment.GetEnvironmentVariable("GITHUB_TOKEN")

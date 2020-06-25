@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>wk-issue-downloader</ToolCommandName>
         <PackageId>wk.IssueDownloader</PackageId>
@@ -14,12 +14,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommonMark.NET" 
-            Version="0.15.1" />
-        <PackageReference Include="LibGit2Sharp" 
-            Version="0.26.1" />
-        <PackageReference Include="Octokit" 
-            Version="0.32.0" />
+        <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+        <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+        <PackageReference Include="Octokit" Version="0.48.0" />
     </ItemGroup>
 
 </Project>
